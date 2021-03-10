@@ -140,6 +140,19 @@
    $src2_value[31:0] = $rd2_data;
    //`BOGUS_USE($src1_value $src2_value)
    
+   // 7- ALU
+   $result[31:0] =
+    $is_addi ? $src1_value + $imm :
+               $is_add  ?  $src1_value + $src2_value :
+               32'b0;
+   
+   // 8- Register File Write
+   //$wr_data[31:0] = $wr_en ? $result : $wr_data[31:0];
+   $rf_wr_en = $rd_valid && ($rd != 5'b0);
+   $rf_wr_index[4:0] = $rd;
+   $wr_data[31:0] = $result;
+   
+   
    `BOGUS_USE()
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = 1'b0;
