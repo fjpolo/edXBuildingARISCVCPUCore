@@ -19,7 +19,8 @@
    //			op==01 -> -
    //			op==10 -> *
    //			op==11 -> /
-   $val1[31:0] = {26'b0, $val1_rand[5:0]};
+   //$val1[31:0] = {26'b0, $val1_rand[5:0]};
+   $val1[31:0] = 1>>$out;
    $val2[31:0] = {28'b0,$val1_rand[3:0]};
    //
    $sum[31:0] = $val1[31:0] + $val2[31:0];
@@ -27,12 +28,12 @@
    $prod[31:0] = $val1 * $val2;
    $quot[31:0] = $val1 / $val2;
    
-   $out[31:0] = $reset ? 32'b0 : $op[1:0] == 2'b00 ? $sum :
-                                 $op == 2'b01 ? $diff :
-                                 $op == 2'b10 ? $prod :
-                                                $quot;
+   $out[31:0] = $reset ? 32'b0 : 
+                $op[1:0] == 2'b00 ? $sum :
+                $op == 2'b01 ? $diff :
+                $op == 2'b10 ? $prod :
+                               $quot;
    
-    $val1[31:0] = 1>>$out[31:0];
 
    // Assert these to end simulation (before Makerchip cycle limit).
    *passed = *cyc_cnt > 40;
